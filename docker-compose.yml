@@ -1,0 +1,55 @@
+services:
+  # File Service
+  file-service-api:
+    build: ./file-service-api  # Specify the folder path for the file-service Dockerfile
+    ports:
+      - "5003:5003"
+    environment:
+      - CLOUDINARY_URL=
+      - MONGO_URI=
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  # Admin Service
+  admin_service_api:
+    build: ./admin_service_api  # Specify the folder path for the admin-service Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  # Time Service
+  time-service-api:
+    build: ./time-service-api  # Specify the folder path for the time-service Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGO_URI=
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  # RabbitMQ Service
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"    # RabbitMQ server port
+      - "15672:15672"  # RabbitMQ management UI port
+
+  # MongoDB Service
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
