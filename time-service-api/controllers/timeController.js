@@ -96,8 +96,36 @@ const getAllTimeSpent = async (req, res) => {
   }
 };
 
+// Controller to get the total time spent by a specific user across all books
+const getTotalTimeSpentByUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Ensure the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find all time entries for the user and sum the timeSpent across all books
+    const totalTimeSpent = await TimeSpent.aggregate([
+      { $match: { userId } },  // Match the user's time entries
+      { $group: { _id: null, totalTime: { $sum: "$timeSpent" } } }  // Sum the timeSpent for the user
+    ]);
+
+    // If no time data exists for the user, return 0
+    const totalSeconds = totalTimeSpent.length > 0 ? totalTimeSpent[0].totalTime : 0;
+    
+    const formattedTime = convertTime(totalSeconds);  // Convert total time from seconds to a readable format
+    res.json({ totalTimeSpent: formattedTime });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving total time spent by user', error });
+  }
+};
+
 module.exports = {
   getTimeSpentByUserAndBook,
   saveTimeSpent,
   getAllTimeSpent,
+  getTotalTimeSpentByUser
 };

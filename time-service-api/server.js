@@ -9,7 +9,7 @@ require('dotenv').config(); // Load environment variables from .env
 const { connectRabbitMQ, sendToQueue } = require('./config/rabbitmq'); // RabbitMQ connection and queue functions
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5005;
 
 // Connect to the MongoDB database
 connectDB();
