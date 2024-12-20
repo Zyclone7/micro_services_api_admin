@@ -9,6 +9,10 @@ const timeSpentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  courseId: {
+    type: String,
+    required: true,  // Assuming courseId is mandatory
+  },
   timeSpent: {
     type: Number,
     required: true,

@@ -1,32 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const { 
-    registerUser, 
-    loginUser, 
-    getAllUsersExceptAdmin, 
-    updateUser, 
-    getUserById, // Include the new function
-    deleteUserById // Include the delete function
+const {
+    createUser,
+    loginUser,
+    getMe,
+    readAllUsersWithRoles,
+    deleteUser,
+    getUserById,
+    updateUser
 } = require('../controllers/userController');
 
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// User registration
-router.post('/', registerUser);
+// Register new user
+router.post('/', protect, admin, createUser);
 
-// User login
+// Login user
 router.post('/login', loginUser);
 
-// Get all users except admins
-router.get('/', protect, admin, getAllUsersExceptAdmin);
+// Get all users with roles (Admin only)
+router.get('/all', protect, admin, readAllUsersWithRoles);
 
-// Get user by ID
-router.get('/:id', protect, admin, getUserById);
+// Get user by ID (Admins can access any user, users can access their own data)
+router.get('/:id', protect, getUserById);
 
-// Update user by ID
+// Delete user by ID (Admin only)
+router.delete('/:id', protect, admin, deleteUser);
+
+// Update user by ID (Users can update their own data, admin can update any user)
 router.put('/:id', protect, admin, updateUser);
 
-// Delete user by ID
-router.delete('/:id', protect, admin, deleteUserById); // New route for deleting a user by ID
+// Get current user (Logged-in user info)
+router.get('/me', protect, getMe);
 
 module.exports = router;

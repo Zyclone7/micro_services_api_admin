@@ -5,8 +5,8 @@ services:
     ports:
       - "5003:5003"
     environment:
-      - CLOUDINARY_URL=
-      - MONGO_URI=
+      - CLOUDINARY_URL=cloudinary://363869894216767:wXaSK4eRfZj4valwx0qeqH6Ar-I@dwgfozpfb
+      - MONGO_URI=mongodb+srv://micro:micro@cluster0.r30cb.mongodb.net/CRUD?retryWrites=true&w=majority&appName=Cluster0
       - RABBITMQ_URI=amqp://rabbitmq:5672
     depends_on:
       - rabbitmq
@@ -18,7 +18,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - MONGO_URI=
+      - MONGO_URI=mongodb+srv://micro:micro@cluster0.r30cb.mongodb.net/CRUD?retryWrites=true&w=majority&appName=Cluster0
       - RABBITMQ_URI=amqp://rabbitmq:5672
     depends_on:
       - rabbitmq
@@ -30,7 +30,7 @@ services:
     ports:
       - "5002:5002"
     environment:
-      - MONGO_URI=
+      - MONGO_URI=mongodb+srv://micro:micro@cluster0.r30cb.mongodb.net/CRUD?retryWrites=true&w=majority&appName=Cluster0
       - RABBITMQ_URI=amqp://rabbitmq:5672
     depends_on:
       - rabbitmq

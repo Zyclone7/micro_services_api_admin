@@ -75,7 +75,7 @@ exports.getFile = async (req, res) => {
   try {
     const file = await File.findById(req.params.id);
 
-    if (!file) {
+    if (!file) {c
       return res.status(404).json({ error: 'File not found' });
     }
 
